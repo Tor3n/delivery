@@ -1,0 +1,14 @@
+/home/toren/code/DDD_src/microservices/delivery/src/main/java/Core/Drivers/DeliveryServer.java
+/home/toren/code/DDD_src/microservices/delivery/src/main/java/Api/Adapters/Http/restAPI/RestApiApplication.java
+/home/toren/code/DDD_src/microservices/delivery/src/main/java/Api/Adapters/Http/restAPI/JsonResponse.java
+/home/toren/code/DDD_src/microservices/delivery/src/main/java/Infrastructure/Adapters/gRPC/gRPCPort.java
+/home/toren/code/DDD_src/microservices/delivery/src/main/java/Api/Adapters/Kafka/KafkaPort.java
+/home/toren/code/DDD_src/microservices/delivery/src/main/java/Api/Adapters/Kafka/SimpleKafkaAdapterImpl.java
+/home/toren/code/DDD_src/microservices/delivery/src/main/java/Infrastructure/Adapters/Postgres/PostgresPort.java
+/home/toren/code/DDD_src/microservices/delivery/src/main/java/Api/Adapters/Http/restAPI/DeliveryRestApi.java
+/home/toren/code/DDD_src/microservices/delivery/src/main/java/Infrastructure/Adapters/Kafka/KafkaPort.java
+/home/toren/code/DDD_src/microservices/delivery/src/main/java/Core/Drivers/ImmediateErrorHandlerImpl.java
+/home/toren/code/DDD_src/microservices/delivery/src/main/java/Api/Adapters/Http/restAPI/annotation/DeliveryApi.java
+/home/toren/code/DDD_src/microservices/delivery/src/main/java/Core/Configuration.java
+/home/toren/code/DDD_src/microservices/delivery/src/main/java/Core/Drivers/ErrorData.java
+/home/toren/code/DDD_src/microservices/delivery/src/main/java/Api/Adapters/Http/web/IndexHtmlServlet.java
