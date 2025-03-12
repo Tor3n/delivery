@@ -29,6 +29,8 @@
         <httpcomponents.client.version>4.5.13</httpcomponents.client.version>
         <maven.version>3.6.3</maven.version>
         <quartz.scheduler.version>2.3.2</quartz.scheduler.version>
+        <junit.jupiter.version>5.7.1</junit.jupiter.version>
+        <testcontainers.version>1.19.0</testcontainers.version>
         <grpc.version>1.55.1</grpc.version>
         <MaxMetaspace>512m</MaxMetaspace>
 
@@ -187,6 +189,19 @@
                 <version>3.11.0</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>${junit.jupiter.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-params</artifactId>
+                <version>${junit.jupiter.version}</version>
+                <scope>test</scope>
+            </dependency>
 
         </dependencies>
 
