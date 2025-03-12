@@ -40,6 +40,11 @@ public class Location {
   }
 
   @Override
+  public String toString(){
+    return "("+xCoordinate+";"+yCoordinate+")";
+  }
+
+  @Override
   public boolean equals(Object other){
     if (other == null) {
       return false;
