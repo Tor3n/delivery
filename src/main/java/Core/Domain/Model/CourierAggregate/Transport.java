@@ -5,8 +5,6 @@ import Core.Domain.SharedKernel.Location;
 import java.security.SecureRandom;
 import java.util.UUID;
 
-import static java.lang.Math.abs;
-
 public class Transport {
 
   private UUID id;
