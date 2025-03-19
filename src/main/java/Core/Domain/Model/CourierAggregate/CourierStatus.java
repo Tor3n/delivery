@@ -32,7 +32,7 @@ public enum CourierStatus {
   /**
    * Retrieving an enum element by ID.
    */
-  public static CourierStatus of(Integer id) {
+  public static CourierStatus of (Integer id) {
     return Stream.of(values())
             .filter(t -> t.getId() == id)
             .findAny()
