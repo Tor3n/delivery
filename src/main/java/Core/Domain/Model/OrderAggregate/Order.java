@@ -23,6 +23,14 @@ public class Order {
     deliveryStatus = OrderStatus.CREATED;
   }
 
+  public Location getDeliveryLocation() {
+    return deliveryLocation;
+  }
+
+  public OrderStatus getDeliveryStatus() {
+    return deliveryStatus;
+  }
+
   public boolean assignCourier(Courier courier){
     this.assignedCourier = courier;
     deliveryStatus = OrderStatus.ASSIGNED;

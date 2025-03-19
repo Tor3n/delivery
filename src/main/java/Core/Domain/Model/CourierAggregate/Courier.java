@@ -21,6 +21,10 @@ public class Courier {
     courierStatus = CourierStatus.READY;
   }
 
+  public CourierStatus getCourierStatus() {
+    return courierStatus;
+  }
+
   public UUID getID(){
     return id;
   }
