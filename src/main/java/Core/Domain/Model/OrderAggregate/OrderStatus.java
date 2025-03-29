@@ -4,9 +4,9 @@ import java.util.stream.Stream;
 
 public enum OrderStatus {
 
-  CREATED(1, "Created"),
-  ASSIGNED(2, "Assigned"),
-  COMPLETED(3, "Completed");
+  CREATED(0, "Created"),
+  ASSIGNED(1, "Assigned"),
+  COMPLETED(2, "Completed");
 
   private final int id;
   private final String name;

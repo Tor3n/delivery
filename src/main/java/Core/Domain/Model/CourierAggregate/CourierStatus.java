@@ -4,9 +4,9 @@ import java.util.stream.Stream;
 
 public enum CourierStatus {
 
-  NOT_AVAILABLE(1, "NotAvailable"),
-  READY(2, "Ready"),
-  BUSY(3, "Busy");
+  NOT_AVAILABLE(0, "NotAvailable"),
+  READY(1, "Ready"),
+  BUSY(2, "Busy");
 
   private final int id;
   private final String name;

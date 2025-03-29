@@ -1,10 +1,19 @@
 package Core.Domain.SharedKernel;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+
 import static java.lang.Math.abs;
 
+@Embeddable
 public class Location {
+
+  @Column(name = "courier_loc_x")
   private int xCoordinate;
+
+  @Column(name = "courier_loc_y")
   private int yCoordinate;
+
   private static final int MINX = 0;
   private static final int MINY = 0;
   private static final int MAXX = 10;
