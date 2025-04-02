@@ -6,13 +6,12 @@ import Core.Domain.Model.OrderAggregate.Order;
 import Core.Domain.Model.OrderAggregate.OrderStatus;
 
 import java.util.*;
-import java.util.stream.IntStream;
 
 public class DispatchServiceImpl implements DispatchService {
 
   @Override
   public boolean dispatch(Order order, List<Courier> courires) {
-    if (order.getDeliveryStatus()!= OrderStatus.CREATED){
+    if (order.getOrderStatus()!= OrderStatus.CREATED){
       throw new RuntimeException("incorrect orderStatus");
     }
 

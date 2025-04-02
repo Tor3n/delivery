@@ -1,19 +1,28 @@
 package Core.Domain.Model.CourierAggregate;
 
 import Core.Domain.SharedKernel.Location;
+import jakarta.persistence.*;
 
 import java.security.SecureRandom;
 import java.util.UUID;
 
+@Entity
+@Table(name = "transport", schema = "delivery")
 public class Transport {
 
+  @Id
+  @Column(name = "id", columnDefinition = "UUID")
   private UUID id;
+
+  @Column(name = "name", nullable = false)
   private String name;
+
+  @Column(name = "speed", nullable = false)
   private int speed;
 
   private static final SecureRandom secureRandom = new SecureRandom();
 
-  private Transport(){}
+  Transport(){}
 
   public Transport(String name, int speed){
     this.id = new UUID(Math.abs(secureRandom.nextLong()), Math.abs(secureRandom.nextLong()));

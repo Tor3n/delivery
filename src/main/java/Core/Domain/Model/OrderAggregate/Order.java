@@ -3,54 +3,59 @@ package Core.Domain.Model.OrderAggregate;
 import Core.Domain.Model.CourierAggregate.Courier;
 import Core.Domain.Model.CourierAggregate.Transport;
 import Core.Domain.SharedKernel.Location;
+import jakarta.persistence.*;
 
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
+@Entity
+@Table(name = "order", schema = "delivery")
 public class Order {
 
+  @Id
+  @Column(name = "id", columnDefinition = "UUID")
   private UUID id;
-  private Location deliveryLocation;
-  private OrderStatus deliveryStatus;
-  private Courier assignedCourier;
-  private static final ConcurrentHashMap<UUID, Order> orderCache = new ConcurrentHashMap<UUID, Order>();
 
-  private Order(){}
+  @Embedded
+  private Location deliveryLocation;
+
+  @Enumerated(EnumType.ORDINAL)
+  @Column(name = "status", nullable = false)
+  private OrderStatus orderStatus;
+
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "courier_id", referencedColumnName = "id", nullable = true)
+  private Courier assignedCourier;
+
+  //@Column(name = "courier_id")
+  //private UUID assignedCourierID;
+
+  protected Order(){}
 
   public Order(UUID id, Location deliverToLocation){
     this.id = id;
     this.deliveryLocation = deliverToLocation;
-    deliveryStatus = OrderStatus.CREATED;
+    orderStatus = OrderStatus.CREATED;
   }
 
   public Location getDeliveryLocation() {
     return deliveryLocation;
   }
 
-  public OrderStatus getDeliveryStatus() {
-    return deliveryStatus;
+  public OrderStatus getOrderStatus() {
+    return orderStatus;
   }
+
 
   public boolean assignCourier(Courier courier){
     this.assignedCourier = courier;
-    deliveryStatus = OrderStatus.ASSIGNED;
-    orderCache.putIfAbsent(this.id, this);
+    //this.assignedCourierID = courier.getID();
     return true;
   }
 
   public boolean completeOrder(){
-    deliveryStatus = OrderStatus.COMPLETED;
-    Order completedOrder = orderCache.computeIfPresent(this.id, (k, v) -> {v.moveOrderToCompleted();
-      return v;
-    });
-    if(completedOrder != null){
-      return true;
-    }
-    return false;
-  }
-
-  private boolean moveOrderToCompleted(){
-    deliveryStatus = OrderStatus.COMPLETED;
+    orderStatus = OrderStatus.COMPLETED;
+    assignedCourier = null;
+    //assignedCourierID = null;
     return true;
   }
 
