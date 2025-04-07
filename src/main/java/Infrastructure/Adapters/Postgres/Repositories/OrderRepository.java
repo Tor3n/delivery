@@ -16,13 +16,13 @@ import java.util.List;
 import java.util.UUID;
 
 public class OrderRepository implements OrderRepositoryInterface {
-  private static final Logger LOGGER = LoggerFactory.getLogger(CourierRepository.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(OrderRepository.class);
 
   private static OrderRepository repository = new OrderRepository();
   public static OrderRepository getRepository(){ return repository; }
 
   @Override
-  public void addOrder(UUID id, Location deliverToLocation) {
+  public boolean addOrder(UUID id, Location deliverToLocation) {
     Session session = HibernateUtil.getCurrentSF().openSession();
     Transaction tr = null;
     try{
@@ -30,9 +30,11 @@ public class OrderRepository implements OrderRepositoryInterface {
       tr = session.beginTransaction();
       session.persist(order);
       tr.commit();
+      return true;
     } catch (Exception e){
       if (tr!=null) tr.rollback();
       LOGGER.error(e.getMessage());
+      return false;
     } finally {
       session.close();
     }

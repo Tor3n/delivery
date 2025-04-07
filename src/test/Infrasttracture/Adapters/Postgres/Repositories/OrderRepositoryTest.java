@@ -42,7 +42,6 @@ public class OrderRepositoryTest {
     System.out.println(isUpdated);
   }
 
-
   @Test
   public void tryGetOrder(){
     Order order = orderRep.getOderById(UUID.fromString("4be4220d-a2d0-43ac-8147-10786288aa2c"));
@@ -50,14 +49,10 @@ public class OrderRepositoryTest {
     Assertions.assertEquals(order.getUUID(),UUID.fromString("4be4220d-a2d0-43ac-8147-10786288aa2c"));
   }
 
-
-
   @Test
   public void tryGetCreatedOrders(){
     List order = orderRep.getOrdersByStatus(OrderStatus.CREATED);
     System.out.println(order);
   }
-
-
 
 }

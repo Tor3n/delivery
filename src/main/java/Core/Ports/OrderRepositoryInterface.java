@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public interface OrderRepositoryInterface {
 
-  public void addOrder(UUID id, Location deliverToLocation);
+  public boolean addOrder(UUID id, Location deliverToLocation);
 
   public boolean updateOrder(UUID id, OrderRepository.OrderUpdater updater);
 

@@ -8,10 +8,10 @@ import static java.lang.Math.abs;
 @Embeddable
 public class Location {
 
-  @Column(name = "courier_loc_x")
+  @Column(name = "loc_x")
   private int xCoordinate;
 
-  @Column(name = "courier_loc_y")
+  @Column(name = "loc_y")
   private int yCoordinate;
 
   private static final int MINX = 0;

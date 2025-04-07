@@ -171,7 +171,7 @@ public class DeliveryServer implements AutoCloseable{
             ContextHandlerCollection contexts, Configuration conf, String path, String contextPath) {
         WebAppContext webApp = new WebAppContext();
         webApp.setContextPath(contextPath);
-        path = "/home/toren/code/DDD_src/microservices/"+path;
+        path = "/home/toren/Code/DDD_training/microservices/"+path;
         LOGGER.info("Path is: {}", path);
         File file = new File(path);
         System.out.println(">>exists: "+file.exists());
