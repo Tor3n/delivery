@@ -82,7 +82,7 @@ public class Configuration {
         
         DELIVERY_SERVER_JETTY_USE_SSL(false),
         DELIVERY_SERVER_PORT(8080),
-        DELIVERY_SERVER_ADDR("127.0.10.1"),
+        DELIVERY_SERVER_ADDR("127.0.10.10"),
         DELIVERY_SERVER_CONTEXT_PATH( "/"),
         DELIVERY_SERVER_JETTY_NAME("deliery_web_server"),
         DELIVERY_SERVER_UI_DEFAULT_DIR("delivery/UI");

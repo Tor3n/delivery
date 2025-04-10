@@ -45,9 +45,13 @@ public class Order {
     return orderStatus;
   }
 
+  public Courier getAssignedCourier() {
+    return assignedCourier;
+  }
 
   public boolean assignCourier(Courier courier){
     this.assignedCourier = courier;
+    this.orderStatus = OrderStatus.ASSIGNED;
     //this.assignedCourierID = courier.getID();
     return true;
   }

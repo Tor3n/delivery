@@ -22,7 +22,7 @@ public class CourierRepositoryTest {
 
   @Test
   public void testAddCourier(){
-    rep.addCourier("VASA33", bike, new Location(1,1));
+    rep.addCourier("VASA33", bike, new Location(5,6));
   }
 
   @Test
@@ -41,6 +41,15 @@ public class CourierRepositoryTest {
     //assertTrue(rep.removeCourier(UUID.fromString("1fdfad4e-eb94-4ed6-88ee-19987aa9d84c")));
   }
 
+
+  @Test
+  public void tryMoveCourier(){
+    boolean isUpdated = rep.updateCourier(UUID.fromString("658068ed-5912-f390-46e6-f07fb205c681"), courier -> {
+      courier.setCurrentLocation(new Location(2,2));});
+    System.out.println(isUpdated);
+
+  }
+
   @Test
   public void tryUpdateCourier(){
     boolean isUpdated = rep.updateCourier(UUID.fromString("642be068-2406-575a-2057-0912dcf47001"), courier -> {courier.setCourierStatus(CourierStatus.BUSY);
@@ -50,6 +59,15 @@ public class CourierRepositoryTest {
     Courier vasiliii = rep.getCourier(UUID.fromString("642be068-2406-575a-2057-0912dcf47001"));
     System.out.println(vasiliii);
   }
+
+  @Test
+  public void tryAssignCourier(){
+    rep.updateCourier(UUID.fromString("642be068-2406-575a-2057-0912dcf47001"), courier -> {
+      //courier.setBusy(order);
+    });
+  }
+
+
 
   @Test
   public void getAllBusyCouriers(){

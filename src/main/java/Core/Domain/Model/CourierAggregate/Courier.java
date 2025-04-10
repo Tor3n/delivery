@@ -53,6 +53,14 @@ public class Courier {
     this.currentLocation = location;
   }
 
+  public Location getCurrentLocation() {
+    return currentLocation;
+  }
+
+  public Transport getTransport() {
+    return transport;
+  }
+
   public void setCourierStatus(CourierStatus courierStatus) {
     this.courierStatus = courierStatus;
   }
@@ -75,22 +83,21 @@ public class Courier {
     return true;
   }
 
-  public boolean setFree(Order order){
+  public boolean setFree(){
     courierStatus = CourierStatus.READY;
-    order.completeOrder();
     return true;
   }
 
   public int calculateTimeToLocation(Location location){
-    return moveTillEnd(currentLocation, location);
+    return countMovesTillEnd(currentLocation, location);
   }
 
-  public int moveTillEnd(Location from, Location to){
+  public int countMovesTillEnd(Location from, Location to){
     int sum = 0;
     if(from.equals(to)){
       return 0;
     } else {
-      sum = sum + 1 + moveTillEnd(transport.move(from, to), to);
+      sum = sum + 1 + countMovesTillEnd(transport.move(from, to), to);
     }
     return sum;
   }
