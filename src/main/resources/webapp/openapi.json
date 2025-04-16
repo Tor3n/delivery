@@ -1,0 +1,51 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Delivery API",
+    "description": "Operations about package delivery",
+    "contact": {
+      "name": "API Support",
+      "url": "https://example.com",
+      "email": "support@example.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.10.10:8080",
+      "description": "Development server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "delivery",
+      "description": "Delivery operations"
+    }
+  ],
+  "paths": {
+    "/kek": {
+      "get": {
+        "tags": [
+          "delivery"
+        ],
+        "summary": "Test endpoint",
+        "description": "Returns a test response",
+        "operationId": "getKek",
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "text/plain": {
+
+              }
+            }
+          }
+        }
+      }
+    } 
+  }
+}

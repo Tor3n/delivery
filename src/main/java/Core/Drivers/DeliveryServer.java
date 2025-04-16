@@ -103,11 +103,11 @@ public class DeliveryServer implements AutoCloseable{
 
         ServiceLocatorUtilities.getService(sharedServiceLocator, BackgroundTasks.class.getName());
 
-        //final WebAppContext defaultWebApp = setupWebAppContext(contexts, conf,
-        //       conf.getString(Configuration.ConfVars.DELIVERY_SERVER_UI_DEFAULT_DIR), "/");
+         final WebAppContext defaultWebApp = setupWebAppContext(contexts, conf,
+               conf.getString(Configuration.ConfVars.DELIVERY_SERVER_UI_DEFAULT_DIR), "/");
 
-        //initWebApp(defaultWebApp);
-        initSwaggerRest();
+        initWebApp(defaultWebApp);
+        //initSwaggerRest(contexts);
 
         Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
 
@@ -187,7 +187,8 @@ public class DeliveryServer implements AutoCloseable{
             ContextHandlerCollection contexts, Configuration conf, String path, String contextPath) {
         WebAppContext webApp = new WebAppContext();
         webApp.setContextPath(contextPath);
-        path = "/home/toren/Code/DDD_training/microservices/"+path;
+        //path = "/home/ruaswjr/Code/DDD_training/microservices/"+path;
+        path = "/home/ruaswjr/Code/DDD_training/microservices/delivery/src/main/resources/webapp";
         LOGGER.info("Path is: {}", path);
         File file = new File(path);
         System.out.println(">>exists: "+file.exists());
@@ -234,74 +235,30 @@ public class DeliveryServer implements AutoCloseable{
         //setupHealthCheckContextHandler(webApp);
     }
 
-    private void initSwaggerRest() {
-        // Handler for API endpoints (JAX-RS)
-        ServletContextHandler apiContext = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        apiContext.setContextPath("/api");
+    private void initSwaggerRest(ContextHandlerCollection contexts) {
+        WebAppContext swaggerContext = new WebAppContext();
+        // Setup Swagger-UI static resources
+        String resourceBasePath = Server.class.getResource("/webapp").toExternalForm();
+        swaggerContext.setWelcomeFiles(new String[] {"index.html"});
+        swaggerContext.setResourceBase(resourceBasePath);
+        swaggerContext.addServlet(new ServletHolder(new DefaultServlet()), "/swagger-ui");
+
+        ServletHolder defaultServlet = new ServletHolder("default", DefaultServlet.class);
+        defaultServlet.setInitParameter("dirAllowed", "false"); // Disable directory listing
+        swaggerContext.addServlet(defaultServlet, "/");
+
+
+        contexts.addHandler(swaggerContext);
 
         // Register Jersey Servlet with our Application
         ServletHolder apiServlet = new ServletHolder(new ServletContainer());
         apiServlet.setInitParameter("javax.ws.rs.Application", RestApiApplication.class.getName());
         apiServlet.setName("rest");
-        apiContext.addServlet(apiServlet, "/*");
+        swaggerContext.addServlet(apiServlet, "/*");
 
-
-        // Handler for Swagger UI
-        ServletContextHandler swaggerUIContext = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        swaggerUIContext.setContextPath("/swagger-ui");
-
-        swaggerUIContext.addServlet(new ServletHolder(new HttpServlet() {
-            @Override
-            protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-                    throws ServletException, IOException {
-
-                if (req.getRequestURI().endsWith("swagger-ui-init.js")) {
-                    resp.setContentType("application/javascript");
-                    // Read from classpath
-                    try (InputStream is = getClass().getResourceAsStream("/swagger-ui-init.js")) {
-                        IOUtils.copy(is, resp.getOutputStream());
-                    }
-                } else {
-                    // Serve original Swagger UI
-                    super.doGet(req, resp);
-                }
-            }
-        }), "/swagger-ui-init.js");
-
-        swaggerUIContext.addServlet(new ServletHolder(new HttpServlet() {
-            @Override
-            protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-                    throws IOException {
-                if ("/swagger-ui".equals(req.getRequestURI())) {
-                    resp.sendRedirect("/swagger-ui/swagger-ui.html");
-                }
-            }
-        }), "/swagger-ui");
-
-
-        // Configure DefaultServlet to serve Swagger UI files
-        ServletHolder swaggerUIHolder = new ServletHolder("default", DefaultServlet.class);
-
-        // Point to Swagger UI files in the webjars
-        String swaggerUIPath = Server.class
-                .getClassLoader()
-                .getResource("META-INF/resources/webjars/swagger-ui/5.10.3")
-                .toExternalForm();
-
-        swaggerUIHolder.setInitParameter("resourceBase", swaggerUIPath);
-        swaggerUIHolder.setInitParameter("dirAllowed", "false");
-        swaggerUIHolder.setInitParameter("pathInfoOnly", "true");
-
-        // Serve index.html by default
-        swaggerUIHolder.setInitParameter("welcomeServlets", "true");
-        swaggerUIHolder.setInitParameter("redirectWelcome", "true");
-
-
-
-        swaggerUIContext.addServlet(swaggerUIHolder, "/*");
 
         // Combine both contexts
-        jettyWebServer.setHandler(new org.eclipse.jetty.server.handler.ContextHandlerCollection(apiContext, swaggerUIContext));
+        //jettyWebServer.setHandler(new org.eclipse.jetty.server.handler.ContextHandlerCollection(apiContext));
     }
 
     @Override

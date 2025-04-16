@@ -1,34 +1,40 @@
 package Api.Adapters.Http.Contract;
 
-import Api.Adapters.Http.restAPI.annotation.DeliveryApi;
-import com.wordnik.swagger.annotations.ApiResponse;
-import com.wordnik.swagger.annotations.ApiResponses;
+import com.wordnik.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import org.json.JSONObject;
+import org.openapitools.client.JSON;
 
 import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/")
 @Singleton
-@DeliveryApi
-@Tag(name = "Delivery REST")
+@Api(value = "/delivery", description = "Operations about delivery")
 public class DeliveryRestApi{
 
   @GET
   @Path("/kek")
+  //@Produces(MediaType.APPLICATION_JSON)
   @Operation(
-          summary = "test methods",
-          description = "Returns kek"
+          summary = "Test endpoint",
+          description = "Returns a test response",
+          operationId = "getKek",
+          tags = { "delivery" }
   )
-  @ApiResponses(value = { @ApiResponse(code = 200, message = "ok"), @ApiResponse(code = 400, message = "Invalid ID supplied"),
-          @ApiResponse(code = 404, message = "Pet not found") })
   public Response getkek(){
-    return Response.ok("kek").build();
+    JSONObject jo = new JSONObject();
+    jo.put("name", "jon doe");
+    jo.put("age", "22");
+    jo.put("city", "chicago");
+    return Response.ok(jo.toString()).build();
   }
+
 
   @GET
   @Path("/createOrder")
@@ -37,8 +43,9 @@ public class DeliveryRestApi{
           description = "creates a random order"
   )
   public Response createOrder(){
-    // do some magic!
-    return Response.ok().entity(  "createOrder!").build();
+
+
+    return Response.ok().entity(  new JSON()).build();
   }
 
   @GET
