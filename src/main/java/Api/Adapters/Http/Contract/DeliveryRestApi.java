@@ -1,17 +1,22 @@
 package Api.Adapters.Http.Contract;
 
+import Core.Commands.CreateOrder.CreateOrderCommand;
+import Core.Domain.Model.CourierAggregate.Courier;
+import Core.Domain.SharedKernel.Location;
+import Core.Queries.GetAllCouriersQuery;
+import Core.Queries.GetBusyCouriersQuery;
+import Core.Queries.GetUnfinishedOrdersQuery;
 import com.wordnik.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import org.json.JSONObject;
 import org.openapitools.client.JSON;
 
 import javax.inject.Singleton;
-import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
+import java.util.UUID;
 
 @Path("/")
 @Singleton
@@ -40,12 +45,14 @@ public class DeliveryRestApi{
   @Path("/createOrder")
   @Operation(
           summary = "Create order",
-          description = "creates a random order"
+          description = "creates an order"
   )
-  public Response createOrder(){
-
-
-    return Response.ok().entity(  new JSON()).build();
+  public Response createOrder(@QueryParam("uuid") String uuid,
+                              @QueryParam("locX") int locX,
+                              @QueryParam("locY") int locY){
+    CreateOrderCommand c = new CreateOrderCommand(UUID.fromString(uuid), new Location(locX,locY));
+    c.command();
+    return Response.ok().entity("ok").build();
   }
 
   @GET
@@ -55,8 +62,13 @@ public class DeliveryRestApi{
           description = "Returns a list of couriers"
   )
   public Response getCouriers() throws NotFoundException {
-    // do some magic!
-    return Response.ok().entity(  "getCouriers!").build();
+    GetAllCouriersQuery couriers = new GetAllCouriersQuery();
+    List<Courier> list = couriers.query();
+    JSONObject jo = new JSONObject();
+    for (int i = 0; i < list.size(); i++) {
+      jo.put("Courier N"+i, list.get(i));
+    }
+    return Response.ok().entity(jo.toString()).build();
   }
 
   @GET
@@ -66,7 +78,12 @@ public class DeliveryRestApi{
           description = "Returns a list of orders"
   )
   public Response getOrders() throws NotFoundException {
-    // do some magic!
-    return Response.ok().entity(  "getOrders!").build();
+    GetUnfinishedOrdersQuery query = new GetUnfinishedOrdersQuery();
+    List<Courier> list = query.query();
+    JSONObject jo = new JSONObject();
+    for (int i = 0; i < list.size(); i++) {
+      jo.put("Order N"+i, list.get(i));
+    }
+    return Response.ok().entity(jo.toString()).build();
   }
 }
