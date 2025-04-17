@@ -16,6 +16,10 @@ import javax.ws.rs.core.Response;
 @Path("/")
 @Singleton
 public class DeliveryRestApi {
+/*
+@Path("/")
+@Singleton
+public class DeliveryRestApi {
 
     @GET
     @Path("version")
@@ -26,5 +30,5 @@ public class DeliveryRestApi {
         return new JsonResponse<>(Response.Status.OK, " version", versionInfo).build();
     }
 
-
+*/
 }

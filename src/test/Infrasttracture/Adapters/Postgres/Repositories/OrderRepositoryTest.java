@@ -22,7 +22,7 @@ public class OrderRepositoryTest {
 
   @Test
   public void testAddOrder(){
-    orderRep.addOrder(UUID.randomUUID(), new Location(10,10));
+    orderRep.addOrder(UUID.randomUUID(), new Location(5,5));
   }
 
   @Test

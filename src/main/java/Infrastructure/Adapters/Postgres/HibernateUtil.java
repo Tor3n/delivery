@@ -13,10 +13,9 @@ import java.util.Map;
 
 public class HibernateUtil {
 
-  private static SessionFactory sessionFactory = getCurrentSF();
+  private static SessionFactory sessionFactory = instantiateSF();
 
-  public static SessionFactory getCurrentSF() {
-
+  public static SessionFactory instantiateSF(){
     Map<String, Object> settings = new HashMap<>();
     settings.put("hibernate.connection.driver_class", "org.postgresql.Driver");
     settings.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
@@ -31,7 +30,6 @@ public class HibernateUtil {
     ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
             .applySettings(settings).build();
 
-
     sessionFactory = new MetadataSources(serviceRegistry).
             addAnnotatedClass(Transport.class).
             addAnnotatedClass(Courier.class).
@@ -40,6 +38,10 @@ public class HibernateUtil {
             buildMetadata().
             buildSessionFactory();
 
+    return sessionFactory;
+  }
+
+  public static SessionFactory getCurrentSF() {
     return sessionFactory;
   }
 }

@@ -22,7 +22,7 @@ public class CourierRepositoryTest {
 
   @Test
   public void testAddCourier(){
-    rep.addCourier("VASA33", bike, new Location(5,6));
+    rep.addCourier("VASA33", bike, new Location(7,8));
   }
 
   @Test

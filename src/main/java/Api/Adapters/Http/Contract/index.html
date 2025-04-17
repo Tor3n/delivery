@@ -1,0 +1,25 @@
+<!-- src/main/resources/META-INF/resources/swagger-ui/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My API Documentation</title>
+  <link rel="stylesheet" type="text/css" href="./swagger-ui.css">
+</head>
+<body>
+  <div id="swagger-ui"></div>
+  <script src="./swagger-ui-bundle.js"></script>
+  <script>
+    window.onload = function() {
+      window.ui = SwaggerUIBundle({
+        url: "/api/openapi.json",  // Point to your actual OpenAPI spec
+        dom_id: '#swagger-ui',
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIStandalonePreset
+        ],
+        layout: "StandaloneLayout"
+      });
+    };
+  </script>
+</body>
+</html>
