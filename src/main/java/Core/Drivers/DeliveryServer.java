@@ -1,6 +1,7 @@
 package Core.Drivers;
 
 
+import Api.Adapters.BackgroudJobs.BackgroundTasks;
 import Api.Adapters.Http.restAPI.RestApiApplication;
 import Api.Adapters.Kafka.SimpleKafkaAdapterImpl;
 import Core.Configuration;
@@ -9,11 +10,17 @@ import io.micrometer.core.instrument.Tags;
 import io.micrometer.core.instrument.binder.jetty.InstrumentedQueuedThreadPool;
 import io.micrometer.core.instrument.binder.jetty.JettyConnectionMetrics;
 import io.micrometer.core.instrument.binder.jetty.TimedHandler;
+import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
+import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.DefaultServlet;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.servlet.ServletContainer;
 import org.glassfish.jersey.servlet.ServletProperties;
+import org.openapitools.client.api.DefaultApi;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import io.micrometer.prometheus.PrometheusConfig;
@@ -27,8 +34,13 @@ import org.eclipse.jetty.webapp.WebAppContext;
 import javax.inject.Singleton;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -85,13 +97,17 @@ public class DeliveryServer implements AutoCloseable{
                     protected void configure() {
                         bind(conf).to(Configuration.class);
                         bindAsContract(SimpleKafkaAdapterImpl.class).in(Singleton.class);
-
+                        bindAsContract(BackgroundTasks.class).in(Singleton.class);
                     }
                 });
 
-        final WebAppContext defaultWebApp = setupWebAppContext(contexts, conf, conf.getString(Configuration.ConfVars.DELIVERY_SERVER_UI_DEFAULT_DIR), conf.getServerContextPath());
+        ServiceLocatorUtilities.getService(sharedServiceLocator, BackgroundTasks.class.getName());
+
+         final WebAppContext defaultWebApp = setupWebAppContext(contexts, conf,
+               conf.getString(Configuration.ConfVars.DELIVERY_SERVER_UI_DEFAULT_DIR), "/");
 
         initWebApp(defaultWebApp);
+        //initSwaggerRest(contexts);
 
         Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
 
@@ -171,7 +187,8 @@ public class DeliveryServer implements AutoCloseable{
             ContextHandlerCollection contexts, Configuration conf, String path, String contextPath) {
         WebAppContext webApp = new WebAppContext();
         webApp.setContextPath(contextPath);
-        path = "/home/toren/Code/DDD_training/microservices/"+path;
+        //path = "/home/ruaswjr/Code/DDD_training/microservices/"+path;
+        path = "/home/ruaswjr/Code/DDD_training/microservices/delivery/src/main/resources/webapp";
         LOGGER.info("Path is: {}", path);
         File file = new File(path);
         System.out.println(">>exists: "+file.exists());
@@ -216,6 +233,32 @@ public class DeliveryServer implements AutoCloseable{
 
         //TODO health endpoints probably...
         //setupHealthCheckContextHandler(webApp);
+    }
+
+    private void initSwaggerRest(ContextHandlerCollection contexts) {
+        WebAppContext swaggerContext = new WebAppContext();
+        // Setup Swagger-UI static resources
+        String resourceBasePath = Server.class.getResource("/webapp").toExternalForm();
+        swaggerContext.setWelcomeFiles(new String[] {"index.html"});
+        swaggerContext.setResourceBase(resourceBasePath);
+        swaggerContext.addServlet(new ServletHolder(new DefaultServlet()), "/swagger-ui");
+
+        ServletHolder defaultServlet = new ServletHolder("default", DefaultServlet.class);
+        defaultServlet.setInitParameter("dirAllowed", "false"); // Disable directory listing
+        swaggerContext.addServlet(defaultServlet, "/");
+
+
+        contexts.addHandler(swaggerContext);
+
+        // Register Jersey Servlet with our Application
+        ServletHolder apiServlet = new ServletHolder(new ServletContainer());
+        apiServlet.setInitParameter("javax.ws.rs.Application", RestApiApplication.class.getName());
+        apiServlet.setName("rest");
+        swaggerContext.addServlet(apiServlet, "/*");
+
+
+        // Combine both contexts
+        //jettyWebServer.setHandler(new org.eclipse.jetty.server.handler.ContextHandlerCollection(apiContext));
     }
 
     @Override

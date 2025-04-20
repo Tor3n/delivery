@@ -17,27 +17,29 @@ public class SetCourierToOrderCommand implements Commandable {
   @Override
   public boolean command() {
     Order freeOrder = orderRep.draftOneCreatedOrder();
-
-    List<Courier> freeCouriers = courierRep.getAllCouriersByStatus(CourierStatus.READY);
-    int min = Integer.MAX_VALUE;
-    Courier candiate = null;
-    for (Courier courier : freeCouriers){
-      int moves = courier.countMovesTillEnd(courier.getCurrentLocation(), freeOrder.getDeliveryLocation());
-      if( moves < min){
-        min = moves;
-        candiate = courier;
+    if(freeOrder != null){
+      List<Courier> freeCouriers = courierRep.getAllCouriersByStatus(CourierStatus.READY);
+      int min = Integer.MAX_VALUE;
+      Courier candiate = null;
+      for (Courier courier : freeCouriers){
+        int moves = courier.countMovesTillEnd(courier.getCurrentLocation(), freeOrder.getDeliveryLocation());
+        if( moves < min){
+          min = moves;
+          candiate = courier;
+        }
       }
-    }
 
-    Courier finalCandiate = candiate;
-    orderRep.updateOrder(freeOrder.getUUID(), order -> {
-      order.assignCourier(finalCandiate);
-      courierRep.updateCourier(finalCandiate.getID(), courier -> {
-        courier.setBusy(order);
+      Courier finalCandiate = candiate;
+      orderRep.updateOrder(freeOrder.getUUID(), order -> {
+        order.assignCourier(finalCandiate);
+        courierRep.updateCourier(finalCandiate.getID(), courier -> {
+          courier.setBusy(order);
+        });
       });
-    });
 
-    return true;
+      return true;
+    }
+    else return false;
   }
 
 

@@ -94,7 +94,8 @@ public class OrderRepository implements OrderRepositoryInterface {
 
   @Override
   public Order draftOneCreatedOrder() {
-    return getOrdersByStatus(OrderStatus.CREATED).get(0);
+    List<Order> orders = getOrdersByStatus(OrderStatus.CREATED);
+    return orders.size()<1 ? null : orders.get(0);
   }
 
   @Override
