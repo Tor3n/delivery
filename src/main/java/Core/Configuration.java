@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 public class Configuration {
     private static final Logger LOGGER = LoggerFactory.getLogger(Configuration.class);
+    private static final Configuration conf = new Configuration();
 
     public String getString(ConfVars c) {
         return c.getStringValue();
@@ -51,12 +52,20 @@ public class Configuration {
         return getString(ConfVars.DELIVERY_SERVER_ADDR);
     }
 
+    public String getGeoName(){
+        return getString(ConfVars.GEO_SERVER_ADDR);
+    }
+
+    public int getGeoPort(){
+        return getInt(ConfVars.GEO_SERVER_PORT);
+    }
+
     public String getServerContextPath() {
         return getString(ConfVars.DELIVERY_SERVER_CONTEXT_PATH);
     }
 
     public static Configuration load() {
-        return new Configuration();
+        return conf;
     }
 
     public void printShortInfo() {
@@ -85,7 +94,9 @@ public class Configuration {
         DELIVERY_SERVER_ADDR("127.0.10.10"),
         DELIVERY_SERVER_CONTEXT_PATH( "/"),
         DELIVERY_SERVER_JETTY_NAME("deliery_web_server"),
-        DELIVERY_SERVER_UI_DEFAULT_DIR("delivery/UI");
+        DELIVERY_SERVER_UI_DEFAULT_DIR("delivery/UI"),
+        GEO_SERVER_ADDR("localhost"),
+        GEO_SERVER_PORT(5004);
 
         private Class<?> varClass;
         private String stringValue;
