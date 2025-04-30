@@ -46,8 +46,21 @@ public class BackgroundTasks {
                     repeatForever()).
             build();
 
+    JobDetail jobDetail3 = newJob(PollKafkaForOrdersJob.class).
+            withIdentity("pollKafka", "Kafka").
+            build();
+
+    Trigger trigger3 = newTrigger().
+            withIdentity("triggerPoll", "Kafka").
+            startNow().
+            withSchedule(simpleSchedule().
+                    withIntervalInMinutes(2).
+                    repeatForever()).
+            build();
+
+
     scheduler.scheduleJob(jobDetail, trigger);
     scheduler.scheduleJob(jobDetail2, trigger2);
-
+    scheduler.scheduleJob(jobDetail3, trigger3);
   }
 }

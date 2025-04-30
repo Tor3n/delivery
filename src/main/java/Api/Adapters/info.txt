@@ -1,1 +1,5 @@
-inputs
+produce
+
+kafka-console-producer --broker-list localhost:9092 --topic my-topic < /home/toren/code/DDD_src/payload/test.json
+
+
