@@ -171,6 +171,12 @@
             </dependency>
 
             <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>2.17.2</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.fasterxml.jackson.datatype</groupId>
                 <artifactId>jackson-datatype-jsr310</artifactId>
                 <version>2.18.3</version>
@@ -362,6 +368,12 @@
                 <scope>compile</scope>
             </dependency>
 
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka-clients</artifactId>
+                <version>3.6.0</version>
+            </dependency>
+
         </dependencies>
 
 
@@ -387,7 +399,9 @@
 
 
         <plugins>
-
+            <!--******************************************************************************************-->
+            <!--***************************GENERATE GRPC message and stub classes*************************-->
+            <!--******************************************************************************************-->
             <!--plugin>
                 <groupId>org.xolstice.maven.plugins</groupId>
                 <artifactId>protobuf-maven-plugin</artifactId>
