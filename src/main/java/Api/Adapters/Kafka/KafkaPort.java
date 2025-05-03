@@ -1,7 +1,6 @@
 package Api.Adapters.Kafka;
 
-public interface KafkaPort<Responce> {
-    public Responce get();
+public interface KafkaPort{
 
-    public boolean set();
+    public boolean poll();
 }

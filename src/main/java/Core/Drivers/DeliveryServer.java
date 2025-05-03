@@ -3,24 +3,19 @@ package Core.Drivers;
 
 import Api.Adapters.BackgroudJobs.BackgroundTasks;
 import Api.Adapters.Http.restAPI.RestApiApplication;
-import Api.Adapters.Kafka.SimpleKafkaAdapterImpl;
+import Api.Adapters.Kafka.JsonSimpleKafkaAdapterImpl;
 import Core.Configuration;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.Tags;
 import io.micrometer.core.instrument.binder.jetty.InstrumentedQueuedThreadPool;
 import io.micrometer.core.instrument.binder.jetty.JettyConnectionMetrics;
 import io.micrometer.core.instrument.binder.jetty.TimedHandler;
-import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
-import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.DefaultServlet;
-import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.glassfish.jersey.servlet.ServletProperties;
-import org.openapitools.client.api.DefaultApi;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import io.micrometer.prometheus.PrometheusConfig;
@@ -34,13 +29,8 @@ import org.eclipse.jetty.webapp.WebAppContext;
 import javax.inject.Singleton;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -96,7 +86,7 @@ public class DeliveryServer implements AutoCloseable{
                     @Override
                     protected void configure() {
                         bind(conf).to(Configuration.class);
-                        bindAsContract(SimpleKafkaAdapterImpl.class).in(Singleton.class);
+                        bindAsContract(JsonSimpleKafkaAdapterImpl.class).in(Singleton.class);
                         bindAsContract(BackgroundTasks.class).in(Singleton.class);
                     }
                 });
