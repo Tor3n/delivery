@@ -1,5 +1,6 @@
 package Core.Domain.Model.OrderAggregate;
 
+import Core.Application.KafkaNotifications;
 import Core.Domain.Model.CourierAggregate.Courier;
 import Core.Domain.Model.CourierAggregate.Transport;
 import Core.Domain.SharedKernel.Location;
@@ -59,6 +60,10 @@ public class Order {
   public boolean completeOrder(){
     orderStatus = OrderStatus.COMPLETED;
     assignedCourier = null;
+
+    KafkaNotifications notifications = new KafkaNotifications();
+    notifications.notifyDomainChange(id, orderStatus);
+
     //assignedCourierID = null;
     return true;
   }
