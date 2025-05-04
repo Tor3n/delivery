@@ -1,6 +1,9 @@
 package Api.Adapters.BackgroudJobs;
 
 import Api.Adapters.Kafka.JsonSimpleKafkaAdapterImpl;
+import Api.Adapters.Kafka.KafkaPort;
+import Core.Commands.Commandable;
+import kafka.Kafka;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -12,7 +15,7 @@ public class PollKafkaForOrdersJob implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        JsonSimpleKafkaAdapterImpl pollKafka = new JsonSimpleKafkaAdapterImpl();
+        Commandable pollKafka = new JsonSimpleKafkaAdapterImpl();
         pollKafka.command();
     }
 }
