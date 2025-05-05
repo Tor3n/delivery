@@ -58,9 +58,22 @@ public class BackgroundTasks {
                     repeatForever()).
             build();
 
+    JobDetail jobDetail4 = newJob(PollOutBox.class).
+            withIdentity("pollOutBox", "outbox").
+            build();
+
+    Trigger trigger4 = newTrigger().
+            withIdentity("pollOutBox", "outbox").
+            startNow().
+            withSchedule(simpleSchedule().
+                    withIntervalInMinutes(2).
+                    repeatForever()).
+            build();
+
 
     scheduler.scheduleJob(jobDetail, trigger);
     scheduler.scheduleJob(jobDetail2, trigger2);
     scheduler.scheduleJob(jobDetail3, trigger3);
+    scheduler.scheduleJob(jobDetail4, trigger4);
   }
 }

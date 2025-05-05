@@ -11,9 +11,14 @@ public class DomainEventHandler {
         observers.add(e);
     }
 
-    public void notifyListeners(){
+    public boolean notifyListeners(){
+        boolean once = true;
         for (DomainEvent event : observers){
-            event.update();
+            if(!event.update()){
+                once = false;
+                break;
+            }
         }
+        return once;
     }
 }

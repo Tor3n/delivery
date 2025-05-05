@@ -41,8 +41,10 @@ public class JsonSimpleKafkaOutputAdapter implements KafkaOutPort{
             System.out.printf("Message sent successfully: topic = %s, partition = %d, offset = %d%n",
                     metadata.topic(), metadata.partition(), metadata.offset());
             //Thread.sleep(500);
+            return true;
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
+            return false;
         }  catch (RuntimeException e) {
             e.printStackTrace();
             LOGGER.error(" Could not process JSON");
@@ -51,7 +53,6 @@ public class JsonSimpleKafkaOutputAdapter implements KafkaOutPort{
             producer.close();
         }
 
-        return false;
     }
 
 }
