@@ -4,6 +4,7 @@ import Core.Domain.Model.CourierAggregate.Courier;
 import Core.Domain.Model.CourierAggregate.Transport;
 import Core.Domain.Model.OrderAggregate.Order;
 import Core.Domain.SharedKernel.Location;
+import Infrastructure.Adapters.Postgres.Entity.OutboxMessage;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -35,6 +36,7 @@ public class HibernateUtil {
             addAnnotatedClass(Courier.class).
             addAnnotatedClass(Order.class).
             addAnnotatedClass(Location.class).
+            addAnnotatedClass(OutboxMessage.class).
             buildMetadata().
             buildSessionFactory();
 

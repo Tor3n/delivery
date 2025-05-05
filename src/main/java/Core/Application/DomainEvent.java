@@ -1,5 +1,5 @@
 package Core.Application;
 
 public interface DomainEvent {
-    void update();
+    boolean update();
 }
