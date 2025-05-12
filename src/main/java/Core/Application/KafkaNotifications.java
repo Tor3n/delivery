@@ -10,16 +10,17 @@ public class KafkaNotifications implements Notification {
 
     public boolean notifyDomainChange(UUID id, OrderStatus status){
         DomainEventHandler handler = new DomainEventHandler();
+
         handler.addDomainEvents( () -> {
             JsonSimpleKafkaOutputAdapter adapter = new JsonSimpleKafkaOutputAdapter();
             JSONObject object = new JSONObject();
             object.append("orderId", id);
             object.append("orderStatus", status);
 
-            adapter.publish("orderChanged", object.toString());
+            return adapter.publish("orderChanged", object.toString());
         });
-        handler.notifyListeners();
-        return true;
+
+        return handler.notifyListeners();
     }
 
 }
